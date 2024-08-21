@@ -4,6 +4,7 @@ namespace Fred\EndCrystal\Item;
 
 use Fred\EndCrystal\Entity\EnderCrystalEntity;
 use pocketmine\block\Bedrock;
+use pocketmine\block\Obsidian;
 use pocketmine\block\Block;
 use pocketmine\entity\Location;
 use pocketmine\item\Item;
@@ -15,7 +16,8 @@ use pocketmine\player\Player;
 class EndCrystalItem extends Item {
   
   public function onInteractBlock(Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, &$returnedItems): ItemUseResult{
-    if($blockClicked instanceof Bedrock && $face === Facing::UP){
+    // Check if the clicked block is either Bedrock or Obsidian and the face is UP
+    if(($blockClicked instanceof Bedrock || $blockClicked instanceof Obsidian) && $face === Facing::UP){
         $entity = new EnderCrystalEntity(Location::fromObject(clone $blockReplace->getPosition()->add(0.5, 0, 0.5), $blockReplace->getPosition()->getWorld()));
         $entity->spawnToAll();
         if($player->hasFiniteResources()) $this->pop();
